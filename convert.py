@@ -29,6 +29,16 @@ def convert_to_csv_flattened(input_file, output_file):
     print(f"JSON file successfully converted to flattened CSV: {output_file}")
 
 
+def convert_to_xlsx_flattened(input_file, output_file):
+    """Convert nested JSON to flattened Excel with transposed structure."""
+    df = pd.read_json(input_file)
+    df = df.T
+    df.reset_index(inplace=True)
+    df.rename(columns={"index": "id"}, inplace=True)
+    df.to_excel(output_file, index=False)
+    print(f"JSON file successfully converted to flattened XLSX: {output_file}")
+
+
 def main():
     # Check if input file is provided
     if len(sys.argv) < 2:
@@ -50,15 +60,16 @@ def main():
     # Display conversion options
     print("\nSelect conversion format:")
     print("1. Excel (XLSX) - Converts JSON directly to Excel format")
+    print("2. Excel (Flattened) - Flattened Excel with transposed structure")
     print(
-        "2. CSV (Basic) - Simple CSV conversion (may not handle nested objects properly)"
+        "3. CSV (Basic) - Simple CSV conversion (may not handle nested objects properly)"
     )
     print(
-        "3. CSV (Flattened) - Flattened CSV with transposed structure (ideal for BigQuery)"
+        "4. CSV (Flattened) - Flattened CSV with transposed structure (ideal for BigQuery)"
     )
 
     # Get user choice
-    choice = input("\nEnter your choice (1-3): ").strip()
+    choice = input("\nEnter your choice (1-4): ").strip()
 
     # Get base filename without extension
     base_name = os.path.splitext(input_file)[0]
@@ -68,13 +79,16 @@ def main():
         output_file = f"{base_name}.xlsx"
         convert_to_xlsx(input_file, output_file)
     elif choice == "2":
+        output_file = f"{base_name}.xlsx"
+        convert_to_xlsx_flattened(input_file, output_file)
+    elif choice == "3":
         output_file = f"{base_name}.csv"
         convert_to_csv_basic(input_file, output_file)
-    elif choice == "3":
+    elif choice == "4":
         output_file = f"{base_name}.csv"
         convert_to_csv_flattened(input_file, output_file)
     else:
-        print("Invalid choice! Please select 1, 2, or 3.")
+        print("Invalid choice! Please select 1, 2, 3, or 4.")
         sys.exit(1)
 
 

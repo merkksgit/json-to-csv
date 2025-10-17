@@ -5,6 +5,7 @@ JSON to CSV/Excel converter with support for nested data flattening. An interact
 ## Features
 
 - **Excel (XLSX)** - Converts JSON directly to Excel format, preserving nested structures
+- **Excel (Flattened)** - Flattened Excel with transposed structure (data arranged vertically)
 - **CSV (Basic)** - Simple CSV conversion (nested objects may not flatten properly)
 - **CSV (Flattened)** - Transposes nested JSON structures, ideal for BigQuery uploads
 
@@ -31,7 +32,7 @@ pip install -r requirements.txt
 python3 convert.py <input_file.json>
 ```
 
-The script will prompt you to select a conversion format (1-3).
+The script will prompt you to select a conversion format (1-4).
 
 ### Example
 
@@ -44,10 +45,11 @@ Then select your desired format:
 ```
 Select conversion format:
 1. Excel (XLSX) - Converts JSON directly to Excel format
-2. CSV (Basic) - Simple CSV conversion (may not handle nested objects properly)
-3. CSV (Flattened) - Flattened CSV with transposed structure (ideal for BigQuery)
+2. Excel (Flattened) - Flattened Excel with transposed structure
+3. CSV (Basic) - Simple CSV conversion (may not handle nested objects properly)
+4. CSV (Flattened) - Flattened CSV with transposed structure (ideal for BigQuery)
 
-Enter your choice (1-3): 3
+Enter your choice (1-4): 4
 ```
 
 ### Global Installation (Optional)
