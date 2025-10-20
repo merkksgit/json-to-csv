@@ -39,6 +39,23 @@ def convert_to_xlsx_flattened(input_file, output_file):
     print(f"JSON file successfully converted to flattened XLSX: {output_file}")
 
 
+def convert_to_parquet(input_file, output_file):
+    """Convert JSON to Parquet format - efficient columnar storage."""
+    df = pd.read_json(input_file)
+    df.to_parquet(output_file, index=False)
+    print(f"JSON file successfully converted to Parquet: {output_file}")
+
+
+def convert_to_parquet_flattened(input_file, output_file):
+    """Convert nested JSON to flattened Parquet with transposed structure."""
+    df = pd.read_json(input_file)
+    df = df.T
+    df.reset_index(inplace=True)
+    df.rename(columns={"index": "id"}, inplace=True)
+    df.to_parquet(output_file, index=False)
+    print(f"JSON file successfully converted to flattened Parquet: {output_file}")
+
+
 def main():
     # Check if input file is provided
     if len(sys.argv) < 2:
@@ -67,9 +84,11 @@ def main():
     print(
         "4. CSV (Flattened) - Flattened CSV with transposed structure (ideal for BigQuery)"
     )
+    print("5. Parquet - Efficient columnar format (ideal for analytics)")
+    print("6. Parquet (Flattened) - Flattened Parquet with transposed structure")
 
     # Get user choice
-    choice = input("\nEnter your choice (1-4): ").strip()
+    choice = input("\nEnter your choice (1-6): ").strip()
 
     # Get base filename without extension
     base_name = os.path.splitext(input_file)[0]
@@ -87,8 +106,14 @@ def main():
     elif choice == "4":
         output_file = f"{base_name}.csv"
         convert_to_csv_flattened(input_file, output_file)
+    elif choice == "5":
+        output_file = f"{base_name}.parquet"
+        convert_to_parquet(input_file, output_file)
+    elif choice == "6":
+        output_file = f"{base_name}.parquet"
+        convert_to_parquet_flattened(input_file, output_file)
     else:
-        print("Invalid choice! Please select 1, 2, 3, or 4.")
+        print("Invalid choice! Please select 1-6.")
         sys.exit(1)
 
 
